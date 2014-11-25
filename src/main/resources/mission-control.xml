@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<Module>
+      <ModulePrefs title="Mission Control" directory_title="Mission Control" description="Webhook Creator for Mission Control">
+        <Require feature="dynamic-height"/>
+        <Require feature="oauthpopup"/>
+        <Require feature="setprefs"/>
+        <Require feature="settitle"/>
+        <Require feature="views"/>
+        <Optional feature="atlassian.util"/>
+        <Optional feature="gadget-directory">
+            <Param name="categories">
+                JIRA
+            </Param>
+        </Optional>
+        #oauth
+        #supportedLocales("gadget.common,gadget.days.left")
+    </ModulePrefs>
+    <UserPref name="isConfigured" datatype="hidden" default_value="false"/>
+    <UserPref name="projectId" datatype="hidden"/>
+    <UserPref name="version" datatype="hidden" default_value="auto"/>
+    <Content type="html">
+      <![CDATA[
+        #requireResource("com.atlassian.jira.gadgets:common")
+        #includeResources()
+        <style type="text/css">
+          .email-input {
+            width: 100px;
+            height: 40px;
+           }
+        </style>
+        <script type="text/javascript">
+          (function () {
+            var gadget = AJS.Gadget({
+              baseUrl: "__ATLASSIAN_BASE_URL__",
+              view: {
+                template: function(args) {
+                  var gadget = this;
+                  var container = AJS.$("<div/>").attr('id', 'container').appendTo(gadget.getView().empty());
+
+                  AJS.$("<h1/>").text('Mission Control').appendTo(container);
+                  AJS.$("<p/>").text('Enter an email address for each interval you would like to receive reports for').appendTo(container);
+
+                  AJS.$("<form/>").attr({action:"http://www.localhost:3000/users", method:"post"}).appendTo(container);
+
+                  var form = AJS.$("form");
+
+                  AJS.$("<label/>").attr({id:"daily", for:"daily"}).appendTo(form);
+                  AJS.$("label#daily").text('Daily');
+                  AJS.$("<input/>").attr({type:"text", id:"daily"}).appendTo(form);
+
+                  AJS.$("<label/>").attr({id:"weekly", for:"weekly"}).appendTo(form);
+                  AJS.$("label#weekly").text('Weekly');
+                  AJS.$("<input/>").attr({type:"text", id:"weekly"}).appendTo(form);
+
+                  AJS.$("<label/>").attr({id:"monthly", for:"monthly"}).appendTo(form);
+                  AJS.$("label#monthly").text('Monthly');
+                  AJS.$("<input/>").attr({type:"text", id:"monthly"}).appendTo(form);
+
+                  AJS.$("<input/>").attr({type:"submit", value:"submit"}).appendTo(form);
+                }
+              }
+          });
+        })();
+      </script>
+    ]]>
+  </Content>
+</Module>
